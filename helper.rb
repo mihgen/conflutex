@@ -38,7 +38,10 @@ helpers do
     body.gsub!(/^h5\. (.*)/, '\subsubsection{\1}')
     body = gsub_markup(body, "{latex}", "")
     body = remove_wiki_block(body, "{info}")
-    body = to_italic(body)
+    body.gsub!(/ _([^_ ].*[^_ ])_ /,'\textit{\1}')  #to_italic
+    body.gsub!(/\*([^\* ].*[^\* ])\*/,'\textbf{\1}')  #to_bold
+    body.gsub!(/"([^"]*)"/, '<<\1>>') #quotasp
+    body.gsub!(/_/, '\_')
     tail = "\\end{document}"
     head.to_s + body + tail
   end
