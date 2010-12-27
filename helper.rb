@@ -36,12 +36,14 @@ helpers do
     body.gsub!(/^h3\. (.*)/, '\section{\1}')
     body.gsub!(/^h4\. (.*)/, '\subsection{\1}')
     body.gsub!(/^h5\. (.*)/, '\subsubsection{\1}')
-    body = gsub_markup(body, "{latex}", "")
+    body.gsub!("{latex}", "")
     body = remove_wiki_block(body, "{info}")
     body.gsub!(/ _([^_ ].*[^_ ])_ /,'\textit{\1}')  #to_italic
     body.gsub!(/\*([^\* ].*[^\* ])\*/,'\textbf{\1}')  #to_bold
-    body.gsub!(/"([^"]*)"/, '<<\1>>') #quotasp
+    body.gsub!(/"([^"]*)"/m, '<<\1>>') #quotas
     body.gsub!(/_/, '\_')
+    body.gsub!(/\{code\}((?:(?!\{code\}).)*)\{code\}/m, '\begin{lstlisting}[frame=none]\1\end{lstlisting}')
+    body.gsub!(/\{\{((?:(?!\{\{).)*)\}\}/m, '\texttt{\1}')  # monospaced font
     tail = "\\end{document}"
     head.to_s + body + tail
   end
