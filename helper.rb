@@ -39,13 +39,13 @@ helpers do
     body.gsub!(/^h5\. (.*)/, '\subsubsection{\1}')
     body.gsub!("{latex}", "")
     body = remove_wiki_block(body, "{info}")
-    body.gsub!(/ _([^_ ].*[^_ ])_ /,'\textit{\1}')  #to_italic
+    body.gsub!(/(^| )_([^_ ].*[^_ ])_/,'\textit{\2}')  #to_italic
     body.gsub!(/\*([^\* ].*[^\* ])\*/,'\textbf{\1}')  #to_bold
     body.gsub!(/"([^"]*)"/m, '<<\1>>') #quotas
     body.gsub!(/ \[#(\S+)\]/, '~\cite{\1}') #reference to bibliography with leading space, replace it to '~'
     body.gsub!(/~\[#(\S+)\]/, '~\cite{\1}') #reference to bibliography
     body.gsub!(/\{anchor:(\S+)\}/, '\bibitem{\1}') 
-    body.gsub!(/_/, '\_')
+    body.gsub!(/_/, '\_') #Escaping '_'
     body.gsub!(/\{code\}((?:(?!\{code\}).)*)\{code\}/m, '\begin{lstlisting}[frame=none]\1\end{lstlisting}')
     body.gsub!(/\{panel\}((?:(?!\{panel\}).)*)\{panel\}/m, '\begin{biblio}\1\end{biblio}')
     body.gsub!(/\{\{((?:(?!\{\{).)*)\}\}/m, '\texttt{\1}')  # monospaced font
